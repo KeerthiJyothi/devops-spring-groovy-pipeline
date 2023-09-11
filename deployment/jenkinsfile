@@ -1,0 +1,185 @@
+pipeline {
+
+    agent any
+
+ 
+
+    tools {
+
+        // Install the Maven version configured as "M3" and add it to the path.
+
+        maven "mvn"
+
+    }
+
+ 
+
+    stages {
+
+        stage('Build') {
+
+            steps {
+
+                // Get some code from a GitHub repository
+
+                git 'https://github.com/KeerthiJyothi/devops-spring-groovy-pipeline.git'
+
+ 
+
+                // Run Maven on a Unix agent.
+
+                script{
+
+                if(isUnix()){
+
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+
+                }
+
+else{
+
+bat "mvn -Dmaven.test.failure.ignore=true clean package"
+
+}
+
+}
+
+               
+
+            }
+
+ 
+
+         }
+
+         stage('Integration Test') {
+
+            steps {
+
+               
+
+ 
+
+                // Run Maven on a Unix agent.
+
+                script{
+
+                if(isUnix()){
+
+                sh "mvn -Dmaven.test.failure.ignore=true clean verify"
+
+                }
+
+else{
+
+bat "mvn -Dmaven.test.failure.ignore=true clean verify"
+
+}
+
+}
+
+}
+
+}
+
+   
+
+       stage('SonarQubeStaticAnalysis') {
+
+steps {
+
+ 
+
+// Run Maven on a Unix agent.
+
+script{
+
+if(isUnix()){
+
+sh "mvn -Dmaven.test.failure.ignore=true sonar:sonar"
+
+               }   
+
+else{
+
+bat "mvn -Dmaven.test.failure.ignore=true sonar:sonar"
+
+}
+
+}
+
+}
+
+ 
+
+   }
+
+   stage('Publish Artifactory') {
+
+steps {
+
+ 
+
+// Run Maven on a Unix agent.
+
+script{
+
+if(isUnix()){
+
+sh "mvn -Dmaven.test.failure.ignore=true deploy"
+
+               }   
+
+else{
+
+bat "mvn -Dmaven.test.failure.ignore=true deploy"
+
+}
+
+}
+
+}
+
+ 
+
+   }
+
+  
+
+   
+
+    }
+
+       post {
+
+                // If Maven was able to run the tests, even if some of the test
+
+                // failed, record the test results and archive the jar file.
+
+                success {
+
+                jacoco(
+
+               
+
+                classPattern: '**/target/classes',
+
+                sourcePattern: '**/src/main/groovy'
+
+               
+
+        
+
+                )
+
+                    junit '**/target/surefire-reports/TEST-*.xml'
+
+                    archiveArtifacts 'target/*.jar'
+
+                }
+
+            }
+
+       
+
+}
