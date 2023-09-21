@@ -148,50 +148,36 @@
 	<build>
 		<plugins>
 			<plugin>
+				
 				<groupId>
 					org.springframework.boot
 				</groupId>
-				<artifactId>
-					spring-boot-maven-plugin
-				</artifactId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+                    <image>
+                        <name>devops-groovy-app</name>
+                    </image>
+                </configuration>
 			</plugin>
 			<plugin>
 				<groupId>
 					org.codehaus.gmavenplus
 				</groupId>
-				<artifactId>
-					gmavenplus-plugin
-				</artifactId>
+				<artifactId>gmavenplus-plugin</artifactId>
 				<version>
 					1.13.1
 				</version>
 				<executions>
 					<execution>
 						<goals>
-							<goal>
-								addSources
-							</goal>
-							<goal>
-								addTestSources
-							</goal>
-							<goal>
-								generateStubs
-							</goal>
-							<goal>
-								compile
-							</goal>
-							<goal>
-								generateTestStubs
-							</goal>
-							<goal>
-								compileTests
-							</goal>
-							<goal>
-								removeStubs
-							</goal>
-							<goal>
-								removeTestStubs
-							</goal>
+							<goal>addSources</goal>
+							<goal>ddTestSources</goal>
+							<goal>generateStubs</goal>
+							<goal>compile</goal>
+		                    <goal>generateTestStubs</goal>
+							<goal>compileTests</goal>
+							<goal>removeStubs</goal>
+							<goal>removeTestStubs</goal>
 						</goals>
 					</execution>
 				</executions>

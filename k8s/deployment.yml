@@ -5,15 +5,12 @@ metadata:
   labels:
     app: devops-groovy-app
 spec:
-
   selector:
     matchLabels:
       app: devops-groovy-app
   replicas: 2
   strategy:
     type: RollingUpdate
-
-
   template:
     metadata:
       labels:
@@ -23,6 +20,5 @@ spec:
       - name: devops-groovy-app
         image: devops-groovy-app
         imagePullPolicy: IfNotPresent
-        
         ports:
         - containerPort: 8888
